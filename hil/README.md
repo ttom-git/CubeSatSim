@@ -22,6 +22,23 @@ restart services, change configuration, access GPIO, or transmit RF.
 
 
 
+
+**INV**
+Collect the "inventory" with:
+
+```sh
+python3 hil/inventory.py --host cubesatsim.local --user pi
+```
+
+read-only. It runs bounded sensor/payload checks and records the raw remote output, 
+to distinguish the unavailable readings (such as eventual missing Raspberry Pi Python dependencies) 
+from valid zero values, so that eventual optional or not-yet-installed components remain in the 
+report instead of failing and output datas could be used to inject them in the json for the sim.
+
+
+
+
+
 **JSON PARSER**
 sample dei sensor -> into json parsing such as:
  
