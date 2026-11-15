@@ -22,42 +22,24 @@ restart services, change configuration, access GPIO, or transmit RF.
 
 
 
-
-**INV**
+**INVENTORY (DiSCOVERY)**
 Collect the "inventory" with:
 
 ```sh
 python3 hil/inventory.py --host cubesatsim.local --user pi
+
+#or 
+
+python3 hil/inventory.py --host cubesatsim.local --user pi --json   #for machine-readable output
 ```
 
-read-only. It runs bounded sensor/payload checks and records the raw remote output, 
-to distinguish the unavailable readings (such as eventual missing Raspberry Pi Python dependencies) 
-from valid zero values, so that eventual optional or not-yet-installed components remain in the 
-report instead of failing and output datas could be used to inject them in the json for the sim.
+read-only and discovery-style without assuming Bus 1/3, a fixed list of INA219 channels, or a 
+particula payload. The report always includes raw command output so an unknown component
+can be investigated without changing the discovery engine.
 
 
+CubeSatSim-specific checks are optional adapters (run with the tag `--adapters`):
 
-
-
-**JSON PARSER**
-sample dei sensor -> into json parsing such as:
- 
-```json
-{
-  "power": {
-    "batery": {"voltage": 3.88, "current": 420},
-    "solar": {"voltage": 5.1, "current": 120}
-  }
-  "mode": {
-    "mode: "f",
-    "simulating": "true"
-  }
-  [..etc]
-}
-```
-
-
-
-**PROPER HIL (o genere)**
-
-w/ graphic html? o rust 0-0
+The adapters run `config -v` and `config -p` only when requested. A missing
+adapter dependency or optional component is reported as unavailable and does
+not invalidate tbe generic discovery
